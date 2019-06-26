@@ -19,8 +19,11 @@ WORD_VEC = gensim.models.KeyedVectors.load_word2vec_format(BAIKE_VEC_PATH, binar
 @app.route('/similar', methods=['POST'])
 def similar():
     data = json.loads(request.data())
-    simi = WORD_VEC.most_similar(data['query'])
-    return json.dumps(simi, ensure_ascii=False)
+    try:
+        simi = WORD_VEC.most_similar(data['query'])
+        return json.dumps(simi, ensure_ascii=False)
+    except:
+        return '{} not in dic'.format(data)
 
 
 @app.route('/wmd', methods=['POST'])
